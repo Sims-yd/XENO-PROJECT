@@ -2,7 +2,8 @@ import { useState, useRef, useEffect } from "react"
 import { Button } from "./components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card"
 import { Badge } from "./components/ui/badge"
-import { Target, BarChart3, Menu, Settings, Bell, Search, LogOut, User } from "lucide-react"
+import { Target, BarChart3, Menu, Settings, LogOut, User } from "lucide-react"
+import { useRef, useEffect } from "react"
 import { Sidebar } from "./components/layout/sidebar"
 import { DashboardOverview } from "./components/dashboard/dashboard-overview"
 import { SegmentBuilder } from "./components/segments/segment-builder"
@@ -16,6 +17,21 @@ function AppContent() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
   const profileMenuRef = useRef(null)
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
+        setProfileMenuOpen(false)
+      }
+    }
+    if (profileMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside)
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [profileMenuOpen])
 
   const handleTabChange = (tab) => {
     setActiveTab(tab)
@@ -46,21 +62,6 @@ function AppContent() {
   if (!user) {
     return <LoginPage />
   }
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
-        setProfileMenuOpen(false)
-      }
-    }
-    if (profileMenuOpen) {
-      document.addEventListener("mousedown", handleClickOutside)
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [profileMenuOpen])
 
   // Show main application with sidebar
   return (

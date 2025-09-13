@@ -154,5 +154,9 @@ export function CampaignManagement({ initialSegment = null }) {
     return <CampaignCreator segment={segment} onCampaignCreated={handleCampaignCreated} onBack={handleBackToHistory} />
   }
 
-  return <CampaignHistory campaigns={campaigns} onViewCampaign={handleViewCampaign} onCreateNew={handleCreateNew} />
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/20">
+      <CampaignHistory campaigns={campaigns} onViewCampaign={handleViewCampaign} onCreateNew={handleCreateNew} />
+    </div>
+  )
 }

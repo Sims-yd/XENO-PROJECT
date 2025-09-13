@@ -1,7 +1,3 @@
-
-
-"use client"
-
 import { useState } from "react"
 import { Button } from "./components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card"
@@ -191,34 +187,34 @@ function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 relative overflow-hidden">
-      {/* Animated background elements */}
+    <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-indigo-100 relative overflow-hidden">
+      {/* Animated background elements - lighter colors */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-200/30 rounded-full blur-3xl animate-pulse"></div>
         <div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse"
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-200/30 rounded-full blur-3xl animate-pulse"
           style={{ animationDelay: "1s" }}
         ></div>
         <div
-          className="absolute top-1/2 left-1/2 w-48 h-48 bg-pink-500/20 rounded-full blur-3xl animate-pulse"
+          className="absolute top-1/2 left-1/2 w-48 h-48 bg-pink-100/30 rounded-full blur-3xl animate-pulse"
           style={{ animationDelay: "2s" }}
         ></div>
       </div>
 
       {/* Header */}
-      <header className="relative z-10 border-b border-white/10 bg-white/5 backdrop-blur-sm">
+      <header className="relative z-10 border-b border-slate-100 bg-white/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+              <div className="h-10 w-10 rounded-xl bg-gradient-to-r from-blue-300 to-indigo-300 flex items-center justify-center shadow-lg">
                 <Target className="h-6 w-6 text-white" />
               </div>
               <div>
-                <span className="text-2xl font-bold text-white">Xeno CRM</span>
-                <p className="text-blue-200 text-sm">Smart Customer Management</p>
+                <span className="text-2xl font-bold text-slate-800">Xeno CRM</span>
+                <p className="text-blue-500 text-sm">Smart Customer Management</p>
               </div>
             </div>
-            <Badge className="bg-gradient-to-r from-blue-500 to-purple-600 text-white border-0">Hackathon 2025</Badge>
+            <Badge className="bg-gradient-to-r from-blue-300 to-indigo-300 text-white border-0">Hackathon 2025</Badge>
           </div>
         </div>
       </header>
@@ -228,17 +224,17 @@ function LoginPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
           <div className="max-w-md mx-auto">
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-white mb-4">{isRegister ? "Create Account" : "Welcome Back"}</h1>
-              <p className="text-blue-100">
+              <h1 className="text-3xl font-bold text-slate-800 mb-4">{isRegister ? "Create Account" : "Welcome Back"}</h1>
+              <p className="text-blue-600">
                 {isRegister ? "Join Xeno CRM to manage your customers" : "Sign in to your Xeno CRM account"}
               </p>
             </div>
 
             {/* Login/Register Form */}
-            <Card className="bg-white/10 backdrop-blur-sm border-white/20">
+            <Card className="bg-white/80 backdrop-blur-sm border-slate-100 shadow-md">
               <CardContent className="p-6">
                 {error && (
-                  <div className="bg-red-500/20 border border-red-500/30 text-red-100 px-4 py-3 rounded-lg mb-4">
+                  <div className="bg-red-100 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-4">
                     {error}
                   </div>
                 )}
@@ -246,13 +242,13 @@ function LoginPage() {
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {isRegister && (
                     <div>
-                      <label className="block text-sm font-medium text-white mb-2">Name</label>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">Name</label>
                       <input
                         type="text"
                         name="name"
                         value={formData.name}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-300"
                         placeholder="Enter your name"
                         required
                       />
@@ -260,26 +256,26 @@ function LoginPage() {
                   )}
 
                   <div>
-                    <label className="block text-sm font-medium text-white mb-2">Email</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Email</label>
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-300"
                       placeholder="Enter your email"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-white mb-2">Password</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Password</label>
                     <input
                       type="password"
                       name="password"
                       value={formData.password}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-300"
                       placeholder="Enter your password"
                       required
                     />
@@ -288,7 +284,7 @@ function LoginPage() {
                   <Button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 font-semibold"
+                    className="w-full bg-gradient-to-r from-blue-300 to-indigo-300 hover:from-blue-400 hover:to-indigo-400 text-white py-3 font-semibold"
                   >
                     {isLoading ? (
                       <div className="flex items-center justify-center gap-2">
@@ -306,21 +302,21 @@ function LoginPage() {
                 <div className="mt-6">
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-white/20" />
+                      <div className="w-full border-t border-slate-200" />
                     </div>
                     <div className="relative flex justify-center text-sm">
-                      <span className="px-2 bg-transparent text-white/60">Or continue with</span>
+                      <span className="px-2 bg-transparent text-slate-400">Or continue with</span>
                     </div>
                   </div>
 
                   <Button
                     onClick={handleGoogleLogin}
                     disabled={isLoading}
-                    className="w-full mt-4 bg-white/10 hover:bg-white/20 text-white border border-white/20"
+                    className="w-full mt-4 bg-white hover:bg-blue-50 text-slate-800 border border-slate-200"
                   >
                     {isLoading ? (
                       <div className="flex items-center justify-center gap-2">
-                        <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        <div className="h-4 w-4 border-2 border-blue-200 border-t-blue-400 rounded-full animate-spin" />
                         Connecting...
                       </div>
                     ) : (
@@ -353,7 +349,7 @@ function LoginPage() {
                   <button
                     type="button"
                     onClick={() => setIsRegister(!isRegister)}
-                    className="text-blue-200 hover:text-white transition-colors"
+                    className="text-blue-600 hover:text-blue-800 transition-colors"
                   >
                     {isRegister ? "Already have an account? Sign in" : "Don't have an account? Sign up"}
                   </button>
@@ -362,9 +358,9 @@ function LoginPage() {
             </Card>
 
             {/* Demo Credentials */}
-            <Card className="mt-4 bg-white/5 backdrop-blur-sm border-white/10">
+            <Card className="mt-4 bg-white/60 backdrop-blur-sm border-slate-100 shadow-sm">
               <CardContent className="p-4">
-                <p className="text-sm text-blue-200 text-center">
+                <p className="text-sm text-blue-600 text-center">
                   <strong>Demo Credentials:</strong>
                   <br />
                   Email: admin@xeno-crm.com

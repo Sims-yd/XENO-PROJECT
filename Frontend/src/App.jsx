@@ -1,8 +1,8 @@
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Button } from "./components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card"
 import { Badge } from "./components/ui/badge"
-import { Target, BarChart3, Menu, Settings, Bell, Search } from "lucide-react"
+import { Target, BarChart3, Menu, Settings, Bell, Search, LogOut, User } from "lucide-react"
 import { Sidebar } from "./components/layout/sidebar"
 import { DashboardOverview } from "./components/dashboard/dashboard-overview"
 import { SegmentBuilder } from "./components/segments/segment-builder"
@@ -10,10 +10,12 @@ import { CampaignManagement } from "./components/campaigns/campaign-management"
 import { AuthProvider, useAuth } from "./hooks/useAuth.jsx"
 
 function AppContent() {
-  const { user, loading } = useAuth()
+  const { user, loading, logout } = useAuth()
   const [activeTab, setActiveTab] = useState("dashboard")
   const [campaignSegment, setCampaignSegment] = useState(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false)
+  const profileMenuRef = useRef(null)
 
   const handleTabChange = (tab) => {
     setActiveTab(tab)
@@ -44,6 +46,21 @@ function AppContent() {
   if (!user) {
     return <LoginPage />
   }
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target)) {
+        setProfileMenuOpen(false)
+      }
+    }
+    if (profileMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside)
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [profileMenuOpen])
 
   // Show main application with sidebar
   return (
@@ -98,8 +115,41 @@ function AppContent() {
                   <Bell className="h-4 w-4" />
                   <span className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full"></span>
                 </Button>
-                <div className="h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-sm font-semibold">
-                  {user.name.charAt(0)}
+                {/* Profile Icon with Dropdown */}
+                <div className="relative" ref={profileMenuRef}>
+                  <button
+                    className="h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    onClick={() => setProfileMenuOpen((open) => !open)}
+                    aria-label="Profile menu"
+                  >
+                    {user.name.charAt(0)}
+                  </button>
+                  {profileMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-lg shadow-lg z-50 animate-slide-in">
+                      <ul className="py-2">
+                        <li>
+                          <button className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-100">
+                            <User className="h-4 w-4 mr-2" />
+                            Profile
+                          </button>
+                        </li>
+                        <li>
+                          <button className="flex items-center w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-100">
+                            <Settings className="h-4 w-4 mr-2" />
+                            Settings
+                          </button>
+                        </li>
+                        <li>
+                          <button className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                            onClick={logout}
+                          >
+                            <LogOut className="h-4 w-4 mr-2" />
+                            Logout
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

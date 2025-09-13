@@ -259,10 +259,9 @@ function LoginPage() {
                 <img src="/src/assets/logo.png" alt="App Logo" className="h-8 w-8" />
               <div>
                 <span className="text-2xl font-bold text-slate-800">Xeno CRM</span>
-                <p className="text-blue-500 text-sm">Smart Customer Management</p>
+                <p className="text-blue-600 text-sm">Smart Customer Management</p>
               </div>
             </div>
-            <Badge className="bg-gradient-to-r from-blue-300 to-indigo-300 text-white border-0">Hackathon 2025</Badge>
           </div>
         </div>
       </header>
@@ -402,19 +401,6 @@ function LoginPage() {
                     {isRegister ? "Already have an account? Sign in" : "Don't have an account? Sign up"}
                   </button>
                 </div>
-              </CardContent>
-            </Card>
-
-            {/* Demo Credentials */}
-            <Card className="mt-4 bg-white/60 backdrop-blur-sm border-slate-100 shadow-sm">
-              <CardContent className="p-4">
-                <p className="text-sm text-blue-600 text-center">
-                  <strong>Demo Credentials:</strong>
-                  <br />
-                  Email: admin@xeno-crm.com
-                  <br />
-                  Password: admin123
-                </p>
               </CardContent>
             </Card>
           </div>

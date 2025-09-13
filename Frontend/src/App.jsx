@@ -3,7 +3,6 @@ import { Button } from "./components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card"
 import { Badge } from "./components/ui/badge"
 import { Target, BarChart3, Menu, Settings, LogOut, User } from "lucide-react"
-import { useRef, useEffect } from "react"
 import { Sidebar } from "./components/layout/sidebar"
 import { DashboardOverview } from "./components/dashboard/dashboard-overview"
 import { SegmentBuilder } from "./components/segments/segment-builder"
@@ -110,10 +109,10 @@ function AppContent() {
 
               <div className="flex items-center gap-3">
                 <Button variant="ghost" size="sm" className="hidden sm:flex">
-                  <Search className="h-4 w-4" />
+                  {/* <Search className="h-4 w-4" /> */}
                 </Button>
                 <Button variant="ghost" size="sm" className="relative">
-                  <Bell className="h-4 w-4" />
+                  {/* <Bell className="h-4 w-4" /> */}
                   <span className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full"></span>
                 </Button>
                 {/* Profile Icon with Dropdown */}

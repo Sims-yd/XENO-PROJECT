@@ -206,9 +206,7 @@ function LoginPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center shadow-lg">
-                <Target className="h-6 w-6 text-white" />
-              </div>
+                <img src="/src/assets/logo.png" alt="App Logo" className="h-8 w-8" />
               <div>
                 <span className="text-2xl font-bold text-slate-800">Xeno CRM</span>
                 <p className="text-blue-600 text-sm">Smart Customer Management</p>
@@ -367,8 +365,8 @@ function AnalyticsPlaceholder({ onNavigate }) {
   return (
     <div className="text-center py-16">
       <div className="max-w-md mx-auto">
-        <div className="h-20 w-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-          <BarChart3 className="h-10 w-10 text-white" />
+        <div className="h-20 w-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+          <img src="/public/logo.png" alt="App Logo" className="h-16 w-16" />
         </div>
         <h2 className="text-2xl font-bold text-slate-900 mb-3">Analytics Dashboard</h2>
         <p className="text-slate-600 mb-8">

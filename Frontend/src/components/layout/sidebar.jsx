@@ -59,9 +59,7 @@ export function Sidebar({ user, activeTab, onTabChange, isOpen, onClose }) {
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-slate-200">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center shadow-lg">
-              <Target className="h-6 w-6 text-white" />
-            </div>
+              <img src="/public/logo.png" alt="App Logo" className="h-8 w-8" />
             <div>
               <h1 className="text-xl font-bold text-slate-900">Xeno CRM</h1>
               <p className="text-xs text-slate-500">Smart Customer Management</p>

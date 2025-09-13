@@ -206,15 +206,14 @@ function LoginPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-r from-blue-300 to-indigo-300 flex items-center justify-center shadow-lg">
+              <div className="h-10 w-10 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center shadow-lg">
                 <Target className="h-6 w-6 text-white" />
               </div>
               <div>
                 <span className="text-2xl font-bold text-slate-800">Xeno CRM</span>
-                <p className="text-blue-500 text-sm">Smart Customer Management</p>
+                <p className="text-blue-600 text-sm">Smart Customer Management</p>
               </div>
             </div>
-            <Badge className="bg-gradient-to-r from-blue-300 to-indigo-300 text-white border-0">Hackathon 2025</Badge>
           </div>
         </div>
       </header>
@@ -354,19 +353,6 @@ function LoginPage() {
                     {isRegister ? "Already have an account? Sign in" : "Don't have an account? Sign up"}
                   </button>
                 </div>
-              </CardContent>
-            </Card>
-
-            {/* Demo Credentials */}
-            <Card className="mt-4 bg-white/60 backdrop-blur-sm border-slate-100 shadow-sm">
-              <CardContent className="p-4">
-                <p className="text-sm text-blue-600 text-center">
-                  <strong>Demo Credentials:</strong>
-                  <br />
-                  Email: admin@xeno-crm.com
-                  <br />
-                  Password: admin123
-                </p>
               </CardContent>
             </Card>
           </div>

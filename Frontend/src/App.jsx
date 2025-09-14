@@ -2,15 +2,15 @@ import { useState, useRef, useEffect } from "react"
 import { Button } from "./components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card"
 import { Badge } from "./components/ui/badge"
-import { Target, BarChart3, Menu, Settings, LogOut, User, Bell, Search } from "lucide-react"
+import { Target, BarChart3, Menu, Settings, LogOut, User, Bell, Search, X } from "lucide-react"
 import { Sidebar } from "./components/layout/sidebar"
+// import { LoginPage } from "./components/auth/LoginPage"
+import { AnalyticsDashboard } from "./components/analytics/AnalyticsDashboard"
+import { SettingsDashboard } from "./components/settings/SettingsDashboard"
 import { DashboardOverview } from "./components/dashboard/dashboard-overview"
 import { SegmentBuilder } from "./components/segments/segment-builder"
 import { CampaignManagement } from "./components/campaigns/campaign-management"
 import { AuthProvider, useAuth } from "./hooks/useAuth.jsx"
-// import { GoogleLogin } from "@react-oauth/google"
-// import jwt_decode from "jwt-decode"
-// import { useGoogleLogin } from "@react-oauth/google"
 import { useGoogleLogin } from "@react-oauth/google"
 
 function AppContent() {
@@ -19,7 +19,11 @@ function AppContent() {
   const [campaignSegment, setCampaignSegment] = useState(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [isSearching, setIsSearching] = useState(false)
+  const [searchResults, setSearchResults] = useState([])
   const profileMenuRef = useRef(null)
+  const searchContainerRef = useRef(null)
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -35,6 +39,20 @@ function AppContent() {
       document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [profileMenuOpen])
+
+  // Update the click outside effect for search
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target)) {
+        setIsSearching(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
 
   const handleTabChange = (tab) => {
     setActiveTab(tab)
@@ -112,18 +130,61 @@ function AppContent() {
               </div>
 
               <div className="flex items-center gap-3">
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="hidden sm:flex items-center gap-2 hover:bg-slate-100 cursor-pointer"
-                  onClick={() => {
-                    // Add search functionality
-                    console.log('Search clicked')
-                  }}
-                >
-                  <Search className="h-4 w-4" />
-                  <span className="text-sm">Search...</span>
-                </Button>
+                {/* Search input and button - visible on larger screens */}
+                <div className="relative hidden sm:block search-container" ref={searchContainerRef}>
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
+                    <input
+                      type="text"
+                      placeholder="Search campaigns, segments..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onFocus={() => setIsSearching(true)}
+                      className="w-64 pl-10 pr-4 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                    />
+                    {searchQuery && (
+                      <button
+                        onClick={() => {
+                          setSearchQuery("")
+                          setSearchResults([])
+                        }}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Search Results Dropdown */}
+                  {isSearching && (
+                    <div className="absolute mt-2 w-96 bg-white rounded-lg shadow-lg border border-slate-200 overflow-hidden z-50">
+                      <div className="max-h-96 overflow-y-auto">
+                        {searchResults.length > 0 ? (
+                          <div className="divide-y divide-slate-100">
+                            {searchResults.map((result, index) => (
+                              <button
+                                key={index}
+                                onClick={() => handleSearchResultClick(result)}
+                                className="w-full px-4 py-3 text-left hover:bg-slate-50 flex items-center gap-3"
+                              >
+                                {getResultIcon(result.type)}
+                                <div>
+                                  <p className="text-sm font-medium text-slate-900">{result.title}</p>
+                                  <p className="text-xs text-slate-500">{result.description}</p>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="p-4 text-center text-slate-500 text-sm">
+                            {searchQuery ? "No results found" : "Type to search..."}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
                 <Button variant="ghost" size="sm" className="relative">
                   <Bell className="h-4 w-4" />
                   <span className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full"></span>
@@ -174,8 +235,8 @@ function AppContent() {
           {activeTab === "dashboard" && <DashboardOverview user={user} onNavigate={handleTabChange} />}
           {activeTab === "segments" && <SegmentBuilder onSegmentSaved={handleSegmentSaved} />}
           {activeTab === "campaigns" && <CampaignManagement initialSegment={campaignSegment} />}
-          {activeTab === "analytics" && <AnalyticsPlaceholder onNavigate={handleTabChange} />}
-          {activeTab === "settings" && <SettingsPlaceholder />}
+          {activeTab === "analytics" && <AnalyticsDashboard />}
+          {activeTab === "settings" && <SettingsDashboard />}
         </main>
       </div>
     </div>
@@ -201,43 +262,6 @@ function LoginPage() {
   })
   const [validationErrors, setValidationErrors] = useState({})
 
-  // const handleGoogleSuccess = async (credentialResponse) => {
-  //   try {
-  //     const decoded = jwt_decode(credentialResponse.credential)
-  //     const userData = {
-  //       googleId: decoded.sub,
-  //       email: decoded.email,
-  //       name: decoded.name,
-  //       // avatar: decoded.picture,
-  //     }
-  //     await googleLogin(userData)
-  //   } catch (err) {
-  //     console.error("Google login failed:", err)
-  //   }
-  // }
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault()
-  //   setIsLoading(true)
-
-  //   try {
-  //     let result
-  //     if (isRegister) {
-  //       result = await register(formData.name, formData.email, formData.password)
-  //     } else {
-  //       result = await login(formData.email, formData.password)
-  //     }
-
-  //     if (!result.success) {
-  //       console.error("Authentication failed:", result.error)
-  //     }
-  //   } catch (error) {
-  //     console.error("Authentication error:", error)
-  //   } finally {
-  //     setIsLoading(false)
-  //   }
-  // }
-
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -245,43 +269,43 @@ function LoginPage() {
     })
   }
 
- const handleGoogleSuccess = async (tokenResponse) => {
-  try {
-    setIsLoading(true)
+  const handleGoogleSuccess = async (tokenResponse) => {
+    try {
+      setIsLoading(true)
 
-    // Example: get profile info from Google
-    const res = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
-      headers: {
-        Authorization: `Bearer ${tokenResponse.access_token}`,
-      },
-    })
-    const profile = await res.json()
+      // Example: get profile info from Google
+      const res = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+        headers: {
+          Authorization: `Bearer ${tokenResponse.access_token}`,
+        },
+      })
+      const profile = await res.json()
 
-    // Now call your backend login with profile data
-    await googleLogin({
-      googleId: profile.sub,       // Google unique ID
-      email: profile.email,
-      name: profile.name,
-      avatar: profile.picture,
-    })
-  } catch (error) {
-    console.error("Google login error:", error)
-  } finally {
-    setIsLoading(false)
+      // Now call your backend login with profile data
+      await googleLogin({
+        googleId: profile.sub,       // Google unique ID
+        email: profile.email,
+        name: profile.name,
+        avatar: profile.picture,
+      })
+    } catch (error) {
+      console.error("Google login error:", error)
+    } finally {
+      setIsLoading(false)
+    }
   }
-}
 
- const validateForm = () => {
+  const validateForm = () => {
     const errors = {}
-    
+
     if (isRegister && (!formData.name || formData.name.length < 2)) {
       errors.name = "Name must be at least 2 characters"
     }
-    
+
     if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
       errors.email = "Please enter a valid email address"
     }
-    
+
     if (!formData.password || formData.password.length < 6) {
       errors.password = "Password must be at least 6 characters"
     }
@@ -318,22 +342,7 @@ function LoginPage() {
     }
   }
 
-// const handleGoogleLogin = useGoogleLogin({
-//   onSuccess: handleGoogleSuccess,
-//   onError: () => {
-//     console.error("Google login failed")
-//     setIsLoading(false)
-//   },
-// })
-
-//   const handleInputChange = (e) => {
-//     setFormData({
-//       ...formData,
-//       [e.target.name]: e.target.value,
-//     })
-//   }
-
-const handleGoogleLogin = useGoogleLogin({
+  const handleGoogleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
         setIsLoading(true)
@@ -341,7 +350,7 @@ const handleGoogleLogin = useGoogleLogin({
           headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
         })
         const profile = await userInfo.json()
-        
+
         await googleLogin({
           googleId: profile.sub,
           email: profile.email,
@@ -380,7 +389,7 @@ const handleGoogleLogin = useGoogleLogin({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-                <img src="/src/assets/logo.png" alt="App Logo" className="h-8 w-8" />
+              <img src="/src/assets/logo.png" alt="App Logo" className="h-8 w-8" />
               <div>
                 <span className="text-2xl font-bold text-slate-800">Xeno CRM</span>
                 <p className="text-blue-600 text-sm">Smart Customer Management</p>
@@ -480,40 +489,40 @@ const handleGoogleLogin = useGoogleLogin({
                     </div>
                   </div>
 
-                <Button
-  onClick={() => handleGoogleLogin()}
-  disabled={isLoading}
-  className="w-full mt-4 bg-white hover:bg-blue-50 text-slate-800 border border-slate-200"
->
-  {isLoading ? (
-    <div className="flex items-center justify-center gap-2">
-      <div className="h-4 w-4 border-2 border-blue-200 border-t-blue-400 rounded-full animate-spin" />
-      Connecting...
-    </div>
-  ) : (
-    <div className="flex items-center gap-3">
-      <svg className="h-5 w-5" viewBox="0 0 24 24">
-        <path
-          fill="currentColor"
-          d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-        />
-        <path
-          fill="currentColor"
-          d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-        />
-        <path
-          fill="currentColor"
-          d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-        />
-        <path
-          fill="currentColor"
-          d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-        />
-      </svg>
-      Continue with Google
-    </div>
-  )}
-</Button>
+                  <Button
+                    onClick={() => handleGoogleLogin()}
+                    disabled={isLoading}
+                    className="w-full mt-4 bg-white hover:bg-blue-50 text-slate-800 border border-slate-200"
+                  >
+                    {isLoading ? (
+                      <div className="flex items-center justify-center gap-2">
+                        <div className="h-4 w-4 border-2 border-blue-200 border-t-blue-400 rounded-full animate-spin" />
+                        Connecting...
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-3">
+                        <svg className="h-5 w-5" viewBox="0 0 24 24">
+                          <path
+                            fill="currentColor"
+                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                          />
+                          <path
+                            fill="currentColor"
+                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                          />
+                          <path
+                            fill="currentColor"
+                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                          />
+                          <path
+                            fill="currentColor"
+                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                          />
+                        </svg>
+                        Continue with Google
+                      </div>
+                    )}
+                  </Button>
                 </div>
 
                 <div className="mt-6 text-center">

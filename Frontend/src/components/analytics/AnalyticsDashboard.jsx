@@ -1,0 +1,146 @@
+import { useState, useEffect } from 'react';
+import { BarChart3, TrendingUp, Users, Mail } from 'lucide-react';
+import { Card } from '../ui/card';
+import { Button } from '../ui/button';
+
+export function AnalyticsDashboard() {
+  const [metrics, setMetrics] = useState({
+    totalCampaigns: 0,
+    totalRecipients: 0,
+    averageOpenRate: 0,
+    clickThroughRate: 0
+  });
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate API call to fetch analytics data
+    const fetchAnalytics = async () => {
+      setIsLoading(true);
+      try {
+        // Replace this with actual API call
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        setMetrics({
+          totalCampaigns: 24,
+          totalRecipients: 15420,
+          averageOpenRate: 32.5,
+          clickThroughRate: 12.8
+        });
+      } catch (error) {
+        console.error('Failed to fetch analytics:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAnalytics();
+  }, []);
+
+  return (
+    <div className="space-y-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <MetricCard
+          title="Total Campaigns"
+          value={metrics.totalCampaigns}
+          icon={<Mail className="h-5 w-5 text-blue-600" />}
+          loading={isLoading}
+        />
+        <MetricCard
+          title="Total Recipients"
+          value={metrics.totalRecipients.toLocaleString()}
+          icon={<Users className="h-5 w-5 text-purple-600" />}
+          loading={isLoading}
+        />
+        <MetricCard
+          title="Average Open Rate"
+          value={metrics.averageOpenRate + '%'}
+          icon={<BarChart3 className="h-5 w-5 text-green-600" />}
+          loading={isLoading}
+        />
+        <MetricCard
+          title="Click Through Rate"
+          value={metrics.clickThroughRate + '%'}
+          icon={<TrendingUp className="h-5 w-5 text-orange-600" />}
+          loading={isLoading}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <CampaignPerformanceChart />
+        <AudienceGrowthChart />
+      </div>
+
+      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+        <h3 className="text-lg font-semibold text-slate-900 mb-4">Recent Activity</h3>
+        <RecentActivityList />
+      </div>
+    </div>
+  );
+}
+
+function MetricCard({ title, value, icon, loading }) {
+  return (
+    <Card className="bg-white">
+      <div className="p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-sm font-medium text-slate-600">{title}</h3>
+          {icon}
+        </div>
+        {loading ? (
+          <div className="h-8 bg-slate-200 animate-pulse rounded"></div>
+        ) : (
+          <p className="text-2xl font-bold text-slate-900">{value}</p>
+        )}
+      </div>
+    </Card>
+  );
+}
+
+function CampaignPerformanceChart() {
+  return (
+    <Card className="bg-white">
+      <div className="p-6">
+        <h3 className="text-lg font-semibold text-slate-900 mb-4">Campaign Performance</h3>
+        {/* Implement chart using your preferred charting library */}
+        <div className="h-64 flex items-center justify-center border-2 border-dashed border-slate-200 rounded-lg">
+          <p className="text-slate-500">Chart will be implemented here</p>
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+function AudienceGrowthChart() {
+  return (
+    <Card className="bg-white">
+      <div className="p-6">
+        <h3 className="text-lg font-semibold text-slate-900 mb-4">Audience Growth</h3>
+        {/* Implement chart using your preferred charting library */}
+        <div className="h-64 flex items-center justify-center border-2 border-dashed border-slate-200 rounded-lg">
+          <p className="text-slate-500">Chart will be implemented here</p>
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+function RecentActivityList() {
+  const activities = [
+    { id: 1, type: 'campaign', title: 'Holiday Campaign', action: 'sent', time: '2 hours ago' },
+    { id: 2, type: 'segment', title: 'High Value Customers', action: 'updated', time: '4 hours ago' },
+    { id: 3, type: 'campaign', title: 'Welcome Series', action: 'created', time: '1 day ago' },
+  ];
+
+  return (
+    <div className="space-y-4">
+      {activities.map(activity => (
+        <div key={activity.id} className="flex items-center justify-between py-3 border-b border-slate-100 last:border-0">
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium text-slate-900">{activity.title}</span>
+            <span className="text-sm text-slate-500">was {activity.action}</span>
+          </div>
+          <span className="text-sm text-slate-400">{activity.time}</span>
+        </div>
+      ))}
+    </div>
+  );
+}

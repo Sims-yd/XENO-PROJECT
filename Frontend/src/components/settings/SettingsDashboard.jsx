@@ -5,6 +5,7 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Switch } from '../ui/switch';
+import { authAPI } from '../../services/api';
 
 export function SettingsDashboard() {
   const [profileForm, setProfileForm] = useState({
@@ -19,10 +20,30 @@ export function SettingsDashboard() {
     activityDigest: true
   });
 
+  const [saveStatus, setSaveStatus] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
-    // Implement profile update logic
-    console.log('Profile update:', profileForm);
+    setSaveStatus("");
+    setIsSaving(true);
+    // Only send name and email to backend
+    const payload = {
+      name: profileForm.name,
+      email: profileForm.email
+    };
+    try {
+      const response = await authAPI.updateProfile(payload);
+      if (response.success) {
+        setSaveStatus("✅ Profile updated successfully!");
+      } else {
+        setSaveStatus(response.message || "❌ Failed to update profile.");
+      }
+    } catch (err) {
+      setSaveStatus("❌ Error updating profile.");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleNotificationToggle = (key) => {
@@ -77,7 +98,13 @@ export function SettingsDashboard() {
                 />
               </div>
             </div>
+            {saveStatus && (
+              <div className="text-sm text-green-600 mt-2">{saveStatus}</div>
+            )}
             <Button type="submit" className="bg-pink-500 hover:bg-pink-600 text-white">Save Changes</Button>
+            {isSaving && (
+              <div className="text-sm text-blue-600 mt-2">Saving...</div>
+            )}
           </form>
         </CardContent>
       </Card>

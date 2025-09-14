@@ -140,7 +140,7 @@ export function LoginPage() {
 
       {/* Logo positioned at top left */}
       <div className="absolute top-4 left-4 z-20 flex items-center gap-3">
-        <img src="/src/assets/logo.png" alt="App Logo" className="h-8 w-8" />
+  <img src="/logo.png" alt="App Logo" className="h-8 w-8" />
         <div>
           <span className="text-xl font-bold text-slate-800">Xeno CRM</span>
           <p className="text-blue-600 text-xs">Smart Customer Management</p>

@@ -107,14 +107,14 @@ export function SegmentBuilder({ onSegmentSaved }) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 bg-gradient-to-br from-indigo-50 via-pink-50/40 to-yellow-50/30 min-h-screen p-4 md:p-8 rounded-xl">
       {/* Header */}
       <div className="animate-slide-in">
-        <h1 className="text-3xl font-bold mb-2 flex items-center gap-3">
-          <Target className="h-8 w-8 text-accent" />
+        <h1 className="text-4xl font-extrabold mb-2 flex items-center gap-3 text-indigo-700 drop-shadow">
+          <Target className="h-10 w-10 text-pink-500" />
           Segment Builder
         </h1>
-        <p className="text-muted-foreground text-pretty">
+        <p className="text-lg text-indigo-500/80 font-medium">
           Create targeted customer segments using dynamic rules and AI-powered insights.
         </p>
       </div>
@@ -124,32 +124,33 @@ export function SegmentBuilder({ onSegmentSaved }) {
       </div>
 
       {/* Segment Details */}
-      <Card className="animate-slide-in" style={{ animationDelay: "100ms" }}>
+      <Card className="animate-slide-in bg-gradient-to-r from-pink-100/60 via-yellow-100/40 to-indigo-100/30 shadow-lg border-0" style={{ animationDelay: "100ms" }}>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Settings className="h-5 w-5 text-accent" />
+          <CardTitle className="flex items-center gap-2 text-pink-700">
+            <Settings className="h-5 w-5 text-yellow-500" />
             Segment Details
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="segment-name">Segment Name *</Label>
+              <Label htmlFor="segment-name" className="text-indigo-700">Segment Name *</Label>
               <Input
                 id="segment-name"
                 placeholder="e.g., High Value Customers"
                 value={segmentName}
                 onChange={(e) => setSegmentName(e.target.value)}
+                className="border-pink-300 focus:border-indigo-400 bg-white/80"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="segment-description">Description</Label>
+              <Label htmlFor="segment-description" className="text-indigo-700">Description</Label>
               <Textarea
                 id="segment-description"
                 placeholder="Describe your target audience..."
                 value={segmentDescription}
                 onChange={(e) => setSegmentDescription(e.target.value)}
-                className="min-h-[80px]"
+                className="min-h-[80px] border-yellow-300 focus:border-pink-400 bg-white/80"
               />
             </div>
           </div>
@@ -157,7 +158,7 @@ export function SegmentBuilder({ onSegmentSaved }) {
       </Card>
 
       {/* Main Content Grid */}
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div className="grid lg:grid-cols-2 gap-8">
         {/* Rule Builder */}
         <div className="animate-slide-in" style={{ animationDelay: "200ms" }}>
           <RuleBuilder rules={rules} onRulesChange={setRules} onPreview={handlePreview} />

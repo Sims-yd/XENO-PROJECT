@@ -198,6 +198,7 @@ export function DashboardOverview({ user, onNavigate }) {
           <RecentCampaigns
             onViewCampaign={handleViewCampaign}
             onEditCampaign={handleEditCampaign}
+            onViewAll={() => onNavigate("campaigns")}
             campaigns={dashboardData.campaigns?.recentCampaigns || []}
           />
         </div>

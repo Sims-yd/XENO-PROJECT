@@ -182,13 +182,15 @@ export function CampaignManagement({ initialSegment = null }) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/20">
-      <CampaignHistory
-        campaigns={campaigns}
-        onViewCampaign={handleViewCampaign}
-        onEditCampaign={handleEditCampaign}
-        onCreateNew={handleCreateNew}
-      />
+    <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-pink-100/40 to-yellow-100/30 p-4 md:p-8 rounded-xl shadow-xl">
+      <div className="max-w-6xl mx-auto">
+        <CampaignHistory
+          campaigns={campaigns}
+          onViewCampaign={handleViewCampaign}
+          onEditCampaign={handleEditCampaign}
+          onCreateNew={handleCreateNew}
+        />
+      </div>
     </div>
   )
 }

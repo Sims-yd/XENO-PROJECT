@@ -5,7 +5,8 @@ import { Button } from "../ui/button"
 import { Badge } from "../ui/badge"
 import { Eye, Edit, MoreHorizontal, Calendar, Users, TrendingUp } from "lucide-react"
 
-export function RecentCampaigns({ onViewCampaign, onEditCampaign, campaigns = [] }) {
+// Added onViewAll prop to enable navigation to full campaigns page
+export function RecentCampaigns({ onViewCampaign, onEditCampaign, onViewAll = () => {}, campaigns = [] }) {
   const getStatusColor = (status) => {
     switch (status) {
       case "running":
@@ -50,7 +51,12 @@ export function RecentCampaigns({ onViewCampaign, onEditCampaign, campaigns = []
               </div>
               Recent Campaigns
             </CardTitle>
-            <Button variant="outline" size="sm" className="text-slate-600 border-slate-300 bg-transparent">
+            <Button
+              onClick={onViewAll}
+              variant="outline"
+              size="sm"
+              className="text-slate-600 border-slate-300 bg-transparent"
+            >
               View All
             </Button>
           </div>
@@ -75,7 +81,12 @@ export function RecentCampaigns({ onViewCampaign, onEditCampaign, campaigns = []
             </div>
             Recent Campaigns
           </CardTitle>
-          <Button variant="outline" size="sm" className="text-slate-600 border-slate-300 bg-transparent">
+          <Button
+            onClick={onViewAll}
+            variant="outline"
+            size="sm"
+            className="text-slate-600 border-slate-300 bg-transparent"
+          >
             View All
           </Button>
         </div>

@@ -37,41 +37,45 @@ export function AnalyticsDashboard() {
   }, []);
 
   return (
-    <div className="space-y-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="space-y-10 bg-gradient-to-br from-indigo-50 via-pink-50/40 to-yellow-50/30 min-h-screen p-4 md:p-8 rounded-xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <MetricCard
           title="Total Campaigns"
           value={metrics.totalCampaigns}
           icon={<Mail className="h-5 w-5 text-blue-600" />}
           loading={isLoading}
+          className="bg-gradient-to-r from-indigo-200 via-pink-100 to-yellow-100 shadow-lg border-0"
         />
         <MetricCard
           title="Total Recipients"
           value={metrics.totalRecipients.toLocaleString()}
           icon={<Users className="h-5 w-5 text-purple-600" />}
           loading={isLoading}
+          className="bg-gradient-to-r from-pink-200 via-yellow-100 to-indigo-100 shadow-lg border-0"
         />
         <MetricCard
           title="Average Open Rate"
           value={metrics.averageOpenRate + '%'}
           icon={<BarChart3 className="h-5 w-5 text-green-600" />}
           loading={isLoading}
+          className="bg-gradient-to-r from-yellow-200 via-indigo-100 to-pink-100 shadow-lg border-0"
         />
         <MetricCard
           title="Click Through Rate"
           value={metrics.clickThroughRate + '%'}
           icon={<TrendingUp className="h-5 w-5 text-orange-600" />}
           loading={isLoading}
+          className="bg-gradient-to-r from-indigo-200 via-yellow-100 to-pink-100 shadow-lg border-0"
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <CampaignPerformanceChart />
         <AudienceGrowthChart />
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
-        <h3 className="text-lg font-semibold text-slate-900 mb-4">Recent Activity</h3>
+      <div className="bg-gradient-to-r from-white via-indigo-50 to-pink-50 rounded-lg shadow-lg border-0 p-8">
+        <h3 className="text-xl font-bold text-indigo-700 mb-4">Recent Activity</h3>
         <RecentActivityList />
       </div>
     </div>
@@ -80,16 +84,16 @@ export function AnalyticsDashboard() {
 
 function MetricCard({ title, value, icon, loading }) {
   return (
-    <Card className="bg-white">
-      <div className="p-6">
+    <Card className={`shadow-lg border-0 ${typeof loading === 'object' && loading.className ? loading.className : ''}`}>
+      <div className="p-8">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-medium text-slate-600">{title}</h3>
+          <h3 className="text-base font-semibold text-indigo-700">{title}</h3>
           {icon}
         </div>
         {loading ? (
-          <div className="h-8 bg-slate-200 animate-pulse rounded"></div>
+          <div className="h-8 bg-indigo-100 animate-pulse rounded"></div>
         ) : (
-          <p className="text-2xl font-bold text-slate-900">{value}</p>
+          <p className="text-3xl font-extrabold text-pink-700 drop-shadow">{value}</p>
         )}
       </div>
     </Card>

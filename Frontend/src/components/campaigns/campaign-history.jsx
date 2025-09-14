@@ -7,9 +7,10 @@ import { Badge } from "../ui/badge"
 import { Input } from "../ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { MessageSquare, Search, Eye, MoreHorizontal, Users, TrendingUp, Clock } from "lucide-react"
+import { Edit } from "lucide-react"
 import { CampaignCardSkeleton } from "../ui/loading-skeleton"
 
-export function CampaignHistory({ campaigns, onViewCampaign, onCreateNew }) {
+export function CampaignHistory({ campaigns, onViewCampaign, onEditCampaign, onCreateNew }) {
   const [filteredCampaigns, setFilteredCampaigns] = useState(campaigns)
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
@@ -232,8 +233,8 @@ export function CampaignHistory({ campaigns, onViewCampaign, onCreateNew }) {
           </Card>
         ) : (
           filteredCampaigns.map((campaign) => (
-            <Card key={campaign.id} className="hover:shadow-md transition-shadow duration-200">
-              <CardContent className="p-4 sm:p-6">
+            <Card key={campaign.id || campaign._id}>
+              <CardContent>
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-3">
@@ -289,9 +290,13 @@ export function CampaignHistory({ campaigns, onViewCampaign, onCreateNew }) {
                   </div>
 
                   <div className="flex items-center gap-2 sm:ml-4">
-                    <Button variant="ghost" size="sm" onClick={() => onViewCampaign(campaign.id)}>
+                    <Button variant="ghost" size="sm" onClick={() => onViewCampaign(campaign.id || campaign._id)}>
                       <Eye className="h-4 w-4" />
                       <span className="sr-only">View campaign</span>
+                    </Button>
+                    <Button variant="ghost" size="sm" onClick={() => onEditCampaign(campaign.id || campaign._id)}>
+                      <Edit className="h-4 w-4" />
+                      <span className="sr-only">Edit campaign</span>
                     </Button>
                     <Button variant="ghost" size="sm">
                       <MoreHorizontal className="h-4 w-4" />

@@ -5,8 +5,6 @@ import { CampaignCreator } from "./campaign-creator"
 import { CampaignHistory } from "./campaign-history"
 
 export function CampaignManagement({ initialSegment = null }) {
-  const [view, setView] = useState(initialSegment ? "create" : "history")
-  const [selectedSegment, setSelectedSegment] = useState(initialSegment)
   const [campaigns, setCampaigns] = useState([
     {
       id: 1,
@@ -81,6 +79,9 @@ export function CampaignManagement({ initialSegment = null }) {
       },
     },
   ])
+  const [view, setView] = useState("history")
+  const [selectedSegment, setSelectedSegment] = useState(initialSegment)
+  const [editingCampaign, setEditingCampaign] = useState(null)
 
   // Simulate real-time delivery updates for sending campaigns
   useEffect(() => {
@@ -138,7 +139,22 @@ export function CampaignManagement({ initialSegment = null }) {
     setView("create")
   }
 
+  const handleEditCampaign = (campaignId) => {
+    const campaign = campaigns.find((c) => c.id === campaignId || c._id === campaignId)
+    setEditingCampaign(campaign)
+    setView("edit")
+  }
+
+  const handleCampaignUpdated = (updatedCampaign) => {
+    setCampaigns((prev) =>
+      prev.map((c) => (c.id === updatedCampaign.id || c._id === updatedCampaign._id ? updatedCampaign : c)),
+    )
+    setEditingCampaign(null)
+    setView("history")
+  }
+
   const handleBackToHistory = () => {
+    setEditingCampaign(null)
     setView("history")
   }
 
@@ -154,9 +170,25 @@ export function CampaignManagement({ initialSegment = null }) {
     return <CampaignCreator segment={segment} onCampaignCreated={handleCampaignCreated} onBack={handleBackToHistory} />
   }
 
+  if (view === "edit" && editingCampaign) {
+    return (
+      <CampaignCreator
+        segment={selectedSegment}
+        campaign={editingCampaign}
+        onCampaignCreated={handleCampaignUpdated}
+        onBack={handleBackToHistory}
+      />
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/20">
-      <CampaignHistory campaigns={campaigns} onViewCampaign={handleViewCampaign} onCreateNew={handleCreateNew} />
+      <CampaignHistory
+        campaigns={campaigns}
+        onViewCampaign={handleViewCampaign}
+        onEditCampaign={handleEditCampaign}
+        onCreateNew={handleCreateNew}
+      />
     </div>
   )
 }

@@ -92,9 +92,15 @@ export function DashboardOverview({ user, onNavigate }) {
     }
   }
 
+
   const handleViewCampaign = (campaignId) => {
     console.log("View campaign:", campaignId)
     onNavigate("campaigns")
+  }
+
+  const handleEditCampaign = (campaignId) => {
+    console.log("Edit campaign:", campaignId)
+    onNavigate("campaigns", { view: "edit", campaignId })
   }
 
   if (dashboardData.loading && !dashboardData.customers) {
@@ -191,6 +197,7 @@ export function DashboardOverview({ user, onNavigate }) {
         <div className="lg:col-span-2">
           <RecentCampaigns
             onViewCampaign={handleViewCampaign}
+            onEditCampaign={handleEditCampaign}
             campaigns={dashboardData.campaigns?.recentCampaigns || []}
           />
         </div>

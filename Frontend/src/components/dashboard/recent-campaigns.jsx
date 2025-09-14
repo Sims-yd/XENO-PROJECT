@@ -5,7 +5,7 @@ import { Button } from "../ui/button"
 import { Badge } from "../ui/badge"
 import { Eye, Edit, MoreHorizontal, Calendar, Users, TrendingUp } from "lucide-react"
 
-export function RecentCampaigns({ onViewCampaign, campaigns = [] }) {
+export function RecentCampaigns({ onViewCampaign, onEditCampaign, campaigns = [] }) {
   const getStatusColor = (status) => {
     switch (status) {
       case "running":
@@ -145,7 +145,12 @@ export function RecentCampaigns({ onViewCampaign, campaigns = [] }) {
                 >
                   <Eye className="h-4 w-4" />
                 </Button>
-                <Button variant="ghost" size="sm" className="text-slate-600 hover:text-slate-900">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onEditCampaign(campaign._id)}
+                  className="text-slate-600 hover:text-slate-900"
+                >
                   <Edit className="h-4 w-4" />
                 </Button>
                 <Button variant="ghost" size="sm" className="text-slate-600 hover:text-slate-900">

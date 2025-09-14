@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { BarChart3, TrendingUp, Users, Mail } from 'lucide-react';
 import { Card } from '../ui/card';
 import { Button } from '../ui/button';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, CartesianGrid } from 'recharts';
 
 export function AnalyticsDashboard() {
   const [metrics, setMetrics] = useState({
@@ -96,28 +97,53 @@ function MetricCard({ title, value, icon, loading }) {
 }
 
 function CampaignPerformanceChart() {
+  const data = [
+    { name: 'Jan', sent: 400, opened: 240, clicked: 100 },
+    { name: 'Feb', sent: 300, opened: 139, clicked: 80 },
+    { name: 'Mar', sent: 200, opened: 980, clicked: 50 },
+    { name: 'Apr', sent: 278, opened: 390, clicked: 60 },
+    { name: 'May', sent: 189, opened: 480, clicked: 70 },
+  ];
   return (
     <Card className="bg-white">
       <div className="p-6">
         <h3 className="text-lg font-semibold text-slate-900 mb-4">Campaign Performance</h3>
-        {/* Implement chart using your preferred charting library */}
-        <div className="h-64 flex items-center justify-center border-2 border-dashed border-slate-200 rounded-lg">
-          <p className="text-slate-500">Chart will be implemented here</p>
-        </div>
+        <ResponsiveContainer width="100%" height={250}>
+          <BarChart data={data}>
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="sent" fill="#8884d8" name="Sent" />
+            <Bar dataKey="opened" fill="#82ca9d" name="Opened" />
+            <Bar dataKey="clicked" fill="#ffc658" name="Clicked" />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
     </Card>
   );
 }
 
 function AudienceGrowthChart() {
+  const data = [
+    { name: 'Jan', audience: 1000 },
+    { name: 'Feb', audience: 1200 },
+    { name: 'Mar', audience: 1500 },
+    { name: 'Apr', audience: 1700 },
+    { name: 'May', audience: 2000 },
+  ];
   return (
     <Card className="bg-white">
       <div className="p-6">
         <h3 className="text-lg font-semibold text-slate-900 mb-4">Audience Growth</h3>
-        {/* Implement chart using your preferred charting library */}
-        <div className="h-64 flex items-center justify-center border-2 border-dashed border-slate-200 rounded-lg">
-          <p className="text-slate-500">Chart will be implemented here</p>
-        </div>
+        <ResponsiveContainer width="100%" height={250}>
+          <LineChart data={data}>
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+            <Line type="monotone" dataKey="audience" stroke="#8884d8" />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
     </Card>
   );
